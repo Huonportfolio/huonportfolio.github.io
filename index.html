@@ -583,32 +583,33 @@
   </div>
 
   <script>
-    // Filter project cards by category.
-    const filterButtons = document.querySelectorAll(".filter");
-    const projects = document.querySelectorAll(".project");
+  const filterButtons = document.querySelectorAll(".filter");
+  const projects = document.querySelectorAll(".project");
 
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const selected = button.dataset.filter;
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedFilter = button.dataset.filter;
 
-        filterButtons.forEach((item) => {
-          const active = item === button;
-          item.classList.toggle("active", active);
-          item.setAttribute("aria-pressed", String(active));
-        });
+      filterButtons.forEach((btn) => {
+        const isActive = btn === button;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-pressed", String(isActive));
+      });
 
-        projects.forEach((project) => {
-          project.hidden =
-            selected !== "all" &&
-            project.dataset.category !== selected;
-        });
+      projects.forEach((project) => {
+        const categories = project.dataset.category
+          .trim()
+          .split(/\s+/);
+
+        const matches =
+          selectedFilter === "all" ||
+          categories.includes(selectedFilter);
+
+        project.style.display = matches ? "" : "none";
       });
     });
-
-    // Automatically display the current year.
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
-  </script>
+  });
+</script>
 </body>
 </html>
 ```
